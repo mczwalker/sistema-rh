@@ -10,6 +10,8 @@ use app\modules\talentos\models\Cursos;
 use app\modules\talentos\models\Experiencias;
 use yii\web\Controller;
 use yii\data\ActiveDataProvider;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 use Yii;
 
 /**
@@ -27,6 +29,7 @@ class DefaultController extends Controller
     }
 
     public function actionCreate(){
+        $image = new UploadForm();
         $modelPessoa = new Pessoa();
         $modelEndereco = new Endereco();
         $modelEscolaridade = new Escolaridade();
@@ -37,7 +40,12 @@ class DefaultController extends Controller
         $post = Yii::$app->request->post();
 
         if($post){
+            
             $modelPessoa->load($post);
+            $image->imageFile = UploadedFile::getInstance($image, 'imageFile');
+            if ($image->upload()) {
+                $modelPessoa->foto_perfil = $image->imageFile->name;
+            }            
             $modelPessoa->save();
 
             $modelExperiencias->load($post);
@@ -55,6 +63,7 @@ class DefaultController extends Controller
             $modelInformacoesCandidato->load($post);
             $modelInformacoesCandidato->id_pessoa = $modelPessoa->id;
             $modelInformacoesCandidato->save();
+
         }
         
         return $this->render('create', [
@@ -63,7 +72,8 @@ class DefaultController extends Controller
             'modelEscolaridade' => $modelEscolaridade,
             'modelInformacoesCandidato' => $modelInformacoesCandidato,
             'modelCursos' => $modelCursos,
-            'modelExperiencias' => $modelExperiencias
+            'modelExperiencias' => $modelExperiencias,
+            'image' => $image
         ]);
     }
 }

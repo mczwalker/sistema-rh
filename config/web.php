@@ -15,6 +15,9 @@ $config = [
         'talentos' => [
             'class' => 'app\modules\talentos\GerenciamentoDeCurriculos',
         ],
+        'usuarios' => [
+            'class' => 'app\modules\usuarios\UserModule',
+        ],
     ],
     'components' => [
         'request' => [

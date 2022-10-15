@@ -10,8 +10,12 @@ $listaEscolaridade = ['1' => 'Fundamental', '2' => 'Médio', '3' => 'Superior', 
 
     <div class="row">
         <h3> Dados Pessoais </h3>
-        <div class="col-lg-6">   
+        <div class="col-lg-4">   
             <?= $form->field($modelPessoa, 'nome'); ?>
+            <br>
+        </div>
+        <div class="col-lg-2">   
+            <?= $form->field($image, 'imageFile')->fileInput() ?>
             <br>
         </div>
         <div class="col-lg-2">

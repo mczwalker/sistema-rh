@@ -13,6 +13,7 @@ use Yii;
  * @property string $sexo
  * @property string|null $telefone
  * @property string $email
+ * @property string $foto_perfil
  *
  * @property Curso[] $cursos
  * @property Curso[] $cursos0
@@ -39,7 +40,7 @@ class Pessoa extends \yii\db\ActiveRecord
             [['nome', 'data_nascimento', 'sexo', 'email'], 'required'],
             [['email'], 'email'],
             [['data_nascimento'], 'safe'],
-            [['nome', 'telefone'], 'string', 'max' => 255],
+            [['nome', 'telefone', 'foto_perfil'], 'string', 'max' => 255],
             [['sexo'], 'string', 'max' => 1],
         ];
     }
