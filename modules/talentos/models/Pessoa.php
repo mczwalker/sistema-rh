@@ -3,6 +3,7 @@
 namespace app\modules\talentos\models;
 
 use Yii;
+use app\modules\usuarios\models\User;
 
 /**
  * This is the model class for table "{{%pessoa}}".
@@ -13,14 +14,18 @@ use Yii;
  * @property string $sexo
  * @property string|null $telefone
  * @property string $email
- * @property string $foto_perfil
+ * @property string|null $email
+ * @property string|null $foto_perfil
  *
  * @property Curso[] $cursos
- * @property Curso[] $cursos0
- * @property Endereco[] $enderecos
- * @property Escolaridade[] $escolaridades
+ * @property Endereco[] $endereco
+ * @property Escolaridade[] $escolaridade
+ * @property Experiencia[] $experiencias
  * @property InformacoesCandidato[] $informacoesCandidatos
+ * @property User[] $user
  */
+
+ 
 class Pessoa extends \yii\db\ActiveRecord
 {
     /**
@@ -70,21 +75,11 @@ class Pessoa extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Cursos0]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCursos0()
-    {
-        return $this->hasMany(Curso::class, ['id_pessoa' => 'id']);
-    }
-
-    /**
      * Gets query for [[Enderecos]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getEnderecos()
+    public function getEndereco()
     {
         return $this->hasMany(Endereco::class, ['id_pessoa' => 'id']);
     }
@@ -94,7 +89,7 @@ class Pessoa extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getEscolaridades()
+    public function getEscolaridade()
     {
         return $this->hasMany(Escolaridade::class, ['id_pessoa' => 'id']);
     }
@@ -107,5 +102,25 @@ class Pessoa extends \yii\db\ActiveRecord
     public function getInformacoesCandidatos()
     {
         return $this->hasMany(InformacoesCandidato::class, ['id_pessoa' => 'id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser() 
+    { 
+        return $this->hasOne(User::class, ['id_pessoa' => 'id']); 
+    }
+
+    /**
+     * Gets query for [[Experiencia]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExperiencias() 
+    { 
+        return $this->hasMany(Experiencias::class, ['id_pessoa' => 'id']); 
     }
 }

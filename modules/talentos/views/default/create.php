@@ -3,19 +3,14 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 
 $list = ['M' => 'Masculino', 'F' => 'Feminino'];
-$listaEscolaridade = ['1' => 'Fundamental', '2' => 'Médio', '3' => 'Superior', '4' => 'Especialização/MBA', '5' => 'Mestrado', '6' => 'Doutorado', '7' => 'Pós-Doutorado'];
 ?>
 
 <?php $form = ActiveForm::begin(); ?>
 
     <div class="row">
         <h3> Dados Pessoais </h3>
-        <div class="col-lg-4">   
+        <div class="col-lg-6">   
             <?= $form->field($modelPessoa, 'nome'); ?>
-            <br>
-        </div>
-        <div class="col-lg-2">   
-            <?= $form->field($image, 'imageFile')->fileInput() ?>
             <br>
         </div>
         <div class="col-lg-2">
@@ -35,35 +30,49 @@ $listaEscolaridade = ['1' => 'Fundamental', '2' => 'Médio', '3' => 'Superior', 
         <div class="col-lg-6">
             <?= $form->field($modelPessoa, 'email'); ?>
         </div>
+        <div class="col-lg-4">   
+            <?= $form->field($image, 'imageFile')->fileInput(['class' => 'form-control-file'])->label('') ?>
+            <br>
+        </div>
     </div><br>
     <div class="row">
-        <h3> Experiências Profissionais </h3>
+        <div style="display:flex">
+            <div>
+                <h3> Experiências Profissionais </h3>
+            </div>        
+            <div>
+        </div>
+            <button type="button" class="btn btn-primary" id="add-experiencia" style="margin-left:5px">Add +</button>
+        </div>        
         <div class="col-lg-6">   
-            <?= $form->field($modelExperiencias, 'nome_empresa')->label('Nome da Empresa'); ?>
+            <?= $form->field($modelExperiencias, 'nome_empresa[]')->label('Nome da Empresa'); ?>
             <br>
         </div>
         <div class="col-lg-6">
-            <?= $form->field($modelExperiencias, 'cargo'); ?>
+            <?= $form->field($modelExperiencias, 'cargo[]'); ?>
             <br>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-6">
-            <?= $form->field($modelExperiencias, 'descricao')->textarea(['rows' => '6'])->label('Descrição das Atividades'); ?>
+            <?= $form->field($modelExperiencias, 'descricao[]')->textarea(['rows' => '6'])->label('Descrição das Atividades'); ?>
             <br>
         </div>
         <div class="col-lg-2">
-            <?= $form->field($modelExperiencias, 'data_inicio')->input('date')->label('Data de Início'); ?>
+            <?= $form->field($modelExperiencias, 'data_inicio[]')->input('date')->label('Data de Início'); ?>
             <br>
         </div>
         <div class="col-lg-2">
-            <?= $form->field($modelExperiencias, 'data_fim')->input('date')->label('Data Fim'); ?>
+            <?= $form->field($modelExperiencias, 'data_fim[]')->input('date')->label('Data Fim'); ?>
             <br>
         </div>
         <div class="col-lg-2">
-            <?= $form->field($modelExperiencias, 'atual')->checkbox(); ?>
+            <?= $form->field($modelExperiencias, 'atual[]')->checkbox(); ?>
             <br>
         </div>
+    </div>
+    <div class="xp-profissional">
+        
     </div>
     <div class="row">
         <h3> Escolaridade </h3>
@@ -124,3 +133,33 @@ $listaEscolaridade = ['1' => 'Fundamental', '2' => 'Médio', '3' => 'Superior', 
     </div>
 
 <?php ActiveForm::end(); ?>
+
+<?php
+$addExperiencia = '/talentos/default/add-experiencias';
+$js = <<<JS
+
+var count = 0;
+$(document).on('click', '#add-experiencia', function(e){
+    count++;
+
+    $.ajax({
+        url: '$addExperiencia',
+        type: 'GET',
+        success: function(data) {
+            $(".xp-profissional").append("<div id="+count+"xp>"+data+"<div>");
+        }
+    });
+});
+
+$(document).on('click', '#remove-experiencia', function(e){
+var parent_id = $(this).parent().attr('id');
+console.log(parent_id);
+$('#'+parent_id).remove();
+
+});
+
+JS;
+
+$this->registerJs($js);
+
+?>
